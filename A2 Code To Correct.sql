@@ -9,12 +9,12 @@ DECLARE
   k_change            CONSTANT    gggs_data_upload.process_type%TYPE := 'C'; 
   k_active_status     CONSTANT    gggs_customer.status%TYPE := 'A';
   k_data_processed    CONSTANT    gggs_data_upload.data_processed%TYPE := 'Y';
-  k_data_unprocessed  CONSTANT   gggs_data_upload.data_processed%TYPE := 'N';
+  k_data_unprocessed  CONSTANT    gggs_data_upload.data_processed%TYPE := 'N';
   k_no_change_char    CONSTANT    CHAR(2) := 'NC';
   k_no_change_numb    CONSTANT    NUMBER := -1;  
-  v_name1                       gggs_stock.name%TYPE;
-  v_name2                       gggs_stock.name%TYPE; 
-  v_message                     gggs_error_log_table.error_message%TYPE;  
+  v_name1                         gggs_stock.name%TYPE;
+  v_name2                         gggs_stock.name%TYPE; 
+  v_message                       gggs_error_log_table.error_message%TYPE;  
 
   CURSOR c_gggs IS
     SELECT *
@@ -68,7 +68,7 @@ BEGIN
                  contact_first_name = DECODE(r_gggs.column3, k_no_change_char, contact_first_name, r_gggs.column3),
                  contact_last_name = DECODE(r_gggs.column4, k_no_change_char, contact_last_name, r_gggs.column4),
                  contact_phone_number = NVL2(r_gggs.column6, r_gggs.column6, contact_phone_number)
-           WHERE name = r_gggs.column1  
+           WHERE name = r_gggs.column1;
         ELSE 
 	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data');
         END IF;
