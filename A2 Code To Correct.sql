@@ -1,5 +1,4 @@
 DECLARE
-      
   k_customer          CONSTANT    gggs_data_upload.data_type%TYPE := 'CU';
   k_vendor            CONSTANT    gggs_data_upload.data_type%TYPE := 'VE';
   k_category          CONSTANT    gggs_data_upload.data_type%TYPE := 'CA';
@@ -37,14 +36,15 @@ BEGIN
           UPDATE gggs_customer
              SET status = r_gggs.column2
            WHERE name = r_gggs.column1;
-            
+          
         ELSIF (r_gggs.process_type = k_change) THEN
           UPDATE gggs_customer
              SET province = DECODE(r_gggs.column2, k_no_change_char, province, r_gggs.column2),
                  first_name = DECODE(r_gggs.column3, k_no_change_char, first_name, r_gggs.column3),
                  last_name = DECODE(r_gggs.column4, k_no_change_char, last_name, r_gggs.column4),
                  city = DECODE(r_gggs.column5, k_no_change_char, city, r_gggs.column5),
-                 phone_number = NVL(r_gggs.column6, phone_number)
+                --  phone_number = NVL(r_gggs.column6, phone_number)
+                 phone_number = NVL(r_gggs.column6, phone_number) -- change NVL given only 2 expression (syntax)
            WHERE name = r_gggs.column1;  
    	    ELSE 
 	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data');
@@ -57,7 +57,7 @@ BEGIN
           VALUES (gggs_vendor_seq.NEXTVAL, r_gggs.column1, r_gggs.column2, r_gggs.column3,
                   r_gggs.column4, r_gggs.column6, k_active_status);      
                 
-        ELSIF (r_gggs.process_type = k_status) THEN
+        ELSIF (r_gggs.process_type = k_stats) THEN
           UPDATE gggs_vendor
              SET status = r_gggs.column2
            WHERE name = r_gggs.column1;    
@@ -67,12 +67,12 @@ BEGIN
              SET description = DECODE(r_gggs.column2, k_no_change_char, description, r_gggs.column2),
                  contact_first_name = DECODE(r_gggs.column3, k_no_change_char, contact_first_name, r_gggs.column3),
                  contact_last_name = DECODE(r_gggs.column4, k_no_change_char, contact_last_name, r_gggs.column4),
-                 contact_phone_number = NVL(r_gggs.column6, contact_phone_number)
-           WHERE name = r_gggs.column1;
+                 contact_phone_number = NVL2(r_gggs.column6, r_gggs.column6, contact_phone_number)
+           WHERE name = r_gggs.column1  
         ELSE 
 	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data');
         END IF;
-
+ 
       ELSIF (r_gggs.data_type = k_category) THEN
 
         IF (r_gggs.process_type = k_new) THEN
@@ -98,7 +98,7 @@ BEGIN
           SELECT vendorID
             INTO v_name2
             FROM gggs_vendor
-           WHERE name = r_gggs.column3;     
+           WHERE name = r_gggs.column2;     
       
           INSERT INTO gggs_stock
           VALUES (gggs_stock_seq.NEXTVAL, v_name1, v_name2, r_gggs.column3,
@@ -109,7 +109,7 @@ BEGIN
              SET status = r_gggs.column2
            WHERE name = r_gggs.column1;
       
-        ELSIF (r_gggs.process_type = k_change) THEN
+        ELSE IF (r_gggs.process_type = k_change) THEN
           UPDATE gggs_stock
              SET description = DECODE(r_gggs.column4, k_no_change_char, description, r_gggs.column4),
                  price = NVL2(r_gggs.column7, r_gggs.column7, price),
@@ -118,7 +118,7 @@ BEGIN
         ELSE 
 	      RAISE_APPLICATION_ERROR(-20001, r_gggs.data_type || ' is not a valid process request for ' || r_gggs.process_type || ' data');
         END IF;
-	  ELSE
+	  ELSE 
 	    RAISE_APPLICATION_ERROR(-20000, r_gggs.data_type || ' is not a valid type of data to process');
       END IF;
     
@@ -138,9 +138,8 @@ BEGIN
         VALUES 
          (r_gggs.data_type, r_gggs.process_type, v_message);
 	   
-	  COMMIT;
-    END; 
-      
+	    COMMIT; 
+
 	   
   END LOOP;  
 
