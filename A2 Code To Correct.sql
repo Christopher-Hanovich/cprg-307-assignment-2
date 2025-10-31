@@ -1,5 +1,4 @@
 DECLARE
-      
   k_customer          CONSTANT    gggs_data_upload.data_type%TYPE := 'CU';
   k_vendor            CONSTANT    gggs_data_upload.data_type%TYPE := 'VE';
   k_category          CONSTANT    gggs_data_upload.data_type%TYPE := 'CA';
@@ -55,7 +54,7 @@ BEGIN
         IF (r_gggs.process_type = k_new) THEN
           INSERT INTO gggs_vendor
           VALUES (gggs_vendor_seq.NEXTVAL, r_gggs.column1, r_gggs.column2, r_gggs.column3,
-                  r_gggs.column4, r_gggs.column6, k_status);      
+                  r_gggs.column4, r_gggs.column6, k_active_status);      
                 
         ELSIF (r_gggs.process_type = k_status) THEN
           UPDATE gggs_vendor
@@ -98,7 +97,7 @@ BEGIN
           SELECT vendorID
             INTO v_name2
             FROM gggs_vendor
-           WHERE name = r_gggs.column3;     
+           WHERE name = r_gggs.column2;     
       
           INSERT INTO gggs_stock
           VALUES (gggs_stock_seq.NEXTVAL, v_name1, v_name2, r_gggs.column3,
