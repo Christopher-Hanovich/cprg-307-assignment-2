@@ -109,7 +109,7 @@ BEGIN
         ELSIF (r_gggs.process_type = k_status) THEN
           UPDATE gggs_stock
              SET status = r_gggs.column2
-           WHERE name = r_gggs.column1;
+           WHERE name = r_gggs.column3;
       
         ELSIF (r_gggs.process_type = k_change) THEN
           UPDATE gggs_stock
