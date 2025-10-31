@@ -57,7 +57,7 @@ BEGIN
           VALUES (gggs_vendor_seq.NEXTVAL, r_gggs.column1, r_gggs.column2, r_gggs.column3,
                   r_gggs.column4, r_gggs.column6, k_status);      
                 
-        ELSIF (r_gggs.process_type = k_stats) THEN
+        ELSIF (r_gggs.process_type = k_status) THEN
           UPDATE gggs_vendor
              SET status = r_gggs.column2
            WHERE name = r_gggs.column1;    
