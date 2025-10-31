@@ -67,7 +67,7 @@ BEGIN
              SET description = DECODE(r_gggs.column2, k_no_change_char, description, r_gggs.column2),
                  contact_first_name = DECODE(r_gggs.column3, k_no_change_char, contact_first_name, r_gggs.column3),
                  contact_last_name = DECODE(r_gggs.column4, k_no_change_char, contact_last_name, r_gggs.column4),
-                 contact_phone_number = NVL2(r_gggs.column6, r_gggs.column6, contact_phone_number)
+                 contact_phone_number = NVL2(r_gggs.column6, contact_phone_number)
            WHERE name = r_gggs.column1;
         ELSE 
 	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data');
@@ -114,11 +114,11 @@ BEGIN
              SET description = DECODE(r_gggs.column4, k_no_change_char, description, r_gggs.column4),
                  price = NVL2(r_gggs.column7, r_gggs.column7, price),
                  no_in_stock = NVL2(r_gggs.column8, (no_in_stock - r_gggs.column8), no_in_stock)
-           WHERE name = r_gggs.column1;  
+           WHERE name = r_gggs.column1;
         ELSE 
 	      RAISE_APPLICATION_ERROR(-20001, r_gggs.data_type || ' is not a valid process request for ' || r_gggs.process_type || ' data');
         END IF;
-	  ELSE 
+	  ELSE
 	    RAISE_APPLICATION_ERROR(-20000, r_gggs.data_type || ' is not a valid type of data to process');
       END IF;
     
