@@ -44,7 +44,7 @@ BEGIN
                  first_name = DECODE(r_gggs.column3, k_no_change_char, first_name, r_gggs.column3),
                  last_name = DECODE(r_gggs.column4, k_no_change_char, last_name, r_gggs.column4),
                  city = DECODE(r_gggs.column5, k_no_change_char, city, r_gggs.column5),
-                 phone_number = NVL(r_gggs.column6, r_gggs.column6, phone_number)
+                 phone_number = NVL(r_gggs.column6, phone_number)
            WHERE name = r_gggs.column1;  
    	    ELSE 
 	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data');
