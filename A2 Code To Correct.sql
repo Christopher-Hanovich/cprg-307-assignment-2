@@ -109,7 +109,7 @@ BEGIN
              SET status = r_gggs.column2
            WHERE name = r_gggs.column1;
       
-        ELSE IF (r_gggs.process_type = k_change) THEN
+        ELSIF (r_gggs.process_type = k_change) THEN
           UPDATE gggs_stock
              SET description = DECODE(r_gggs.column4, k_no_change_char, description, r_gggs.column4),
                  price = NVL2(r_gggs.column7, r_gggs.column7, price),
