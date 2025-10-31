@@ -47,7 +47,7 @@ BEGIN
                  phone_number = NVL(r_gggs.column6, phone_number)
            WHERE name = r_gggs.column1;  
    	    ELSE 
-	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data ' || 'Line ' || $$PLSQL_LINE);
+	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data');
         END IF;
 
       ELSIF (r_gggs.data_type = k_vendor) THEN
@@ -70,7 +70,7 @@ BEGIN
                  contact_phone_number = NVL(r_gggs.column6, contact_phone_number)
            WHERE name = r_gggs.column1;
         ELSE 
-	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data ' || 'Line ' || $$PLSQL_LINE);
+	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data');
         END IF;
 
       ELSIF (r_gggs.data_type = k_category) THEN
@@ -84,7 +84,7 @@ BEGIN
              SET status = r_gggs.column2
            WHERE name = r_gggs.column1;
         ELSE 
-	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data ' || 'Line ' || $$PLSQL_LINE);
+	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type || ' is not a valid process request for ' || r_gggs.data_type || ' data');
         END IF;
 
       ELSIF (r_gggs.data_type = k_stock) THEN
@@ -118,10 +118,10 @@ BEGIN
                  no_in_stock = NVL2(r_gggs.column8, (no_in_stock - r_gggs.column8), no_in_stock)
            WHERE name = r_gggs.column1;
         ELSE 
-	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type  || ' is not a valid process request for ' || r_gggs.data_type || ' data ' || 'Line ' || $$PLSQL_LINE);
+	      RAISE_APPLICATION_ERROR(-20001, r_gggs.process_type  || ' is not a valid process request for ' || r_gggs.data_type || ' data');
         END IF;
 	  ELSE
-	    RAISE_APPLICATION_ERROR(-20000, r_gggs.data_type || ' is not a valid type of data to process' || ' Line ' || $$PLSQL_LINE);
+	    RAISE_APPLICATION_ERROR(-20000, r_gggs.data_type || ' is not a valid type of data to process');
       END IF;
     
       UPDATE gggs_data_upload
