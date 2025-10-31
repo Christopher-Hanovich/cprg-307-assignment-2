@@ -127,7 +127,7 @@ BEGIN
 	   WHERE loadID = r_gggs.loadID;
 	 
 	  COMMIT;
-	
+
     EXCEPTION 
       WHEN OTHERS THEN 
         ROLLBACK;
@@ -138,8 +138,9 @@ BEGIN
         VALUES 
          (r_gggs.data_type, r_gggs.process_type, v_message);
 	   
-	    COMMIT; 
-
+	  COMMIT;
+    END; 
+      
 	   
   END LOOP;  
 
